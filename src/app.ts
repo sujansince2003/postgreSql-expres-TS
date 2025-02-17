@@ -77,6 +77,20 @@ app.post("/usercourse", async (req: Request, res: Response) => {
 
 
 
+app.get("/userdata", async (req, res) => {
+    try {
+        const query = `select users.id,users.username,users.email,courses.name ,courses.users_id from users join courses on users.id=courses.users_id where users.id=$1`
+
+        const response = await pgClient.query(query, [2])
+        res.json(response.rows)
+
+
+    } catch (error) {
+        console.log("erroe occured")
+    }
+})
+
+
 
 
 
