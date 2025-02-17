@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Request, Response } from "express"
 import { pgClient } from "./index"
 const app = express()
 
@@ -42,6 +42,37 @@ app.put("/updatetodo", async (req, res) => {
 
 
 
+})
+
+
+app.post("/usercourse", async (req: Request, res: Response) => {
+    try {
+
+
+
+
+        const { username, email, password, name } = req.body
+
+        const userQuery = "insert into users (username,email,password) values($1,$2,$3) returning id"
+        const courseQuery = "insert into courses (name,users_id) values($1,$2)"
+
+        await pgClient.query("BEGIN")
+
+        const userResponse = await pgClient.query(userQuery, [username, email, password])
+        const userId = userResponse.rows[0].id
+        //we will still get userID but final query will run when control reaches to COMMIT
+        const courseResponse = await pgClient.query(courseQuery, [name, userId])
+
+
+        await pgClient.query("COMMIT")
+
+        res.json({ msg: "user created" })
+
+    } catch (error) {
+        res.json({ msg: "error occured", error })
+        console.log(error)
+
+    }
 })
 
 
