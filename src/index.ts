@@ -1,8 +1,7 @@
 import { Client } from "pg";
 import dotenv from "dotenv"
-
+// import app from "./app";
 dotenv.config()
-
 // Ensure the environment variable is correct
 const pgClient = new Client({
     connectionString: process.env.POSTGRES_URL, // Use the correct variable name
@@ -12,21 +11,16 @@ async function connectDB() {
     try {
         // Connect to PostgreSQL
         await pgClient.connect();
-        console.log("✅ Connected to PostgreSQL");
-
-        // Execute the query (make sure to use `await`)
-        const response = await pgClient.query("SELECT * FROM users");
-
-        // Log results
-        console.log("📊 Query Result:", response.rows);
-
+        console.log("Connected to PostgreSQL");
+        const { default: app } = await import("./app");
+        app.listen(3000, () => {
+            console.log(" Server is running on port 3000");
+        })
     } catch (error) {
         console.error("❌ Database connection error:", error);
-    } finally {
-        // Close connection
-        await pgClient.end();
-        console.log("🔌 Disconnected from PostgreSQL");
     }
 }
-
 connectDB();
+export { pgClient }
+
+
