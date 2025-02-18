@@ -29,3 +29,13 @@ model course {
   User       User?  @relation(fields: [userId], references: [id])
   userId     Int?
 }
+
+/**
+ * based on your Prisma schema:
+ * User has a one-to-many relationship with course, meaning one user can have multiple courses.
+ * course has a many-to-one relationship with User, meaning each course belongs to a single user.
+ * How the Relationship Works
+ * In User model, the course field is an array (course[]) → This means one user can have multiple courses.
+ * In course model, the User field represents a single user (User?) → This means each course belongs to only one user.
+ * The userId field in course acts as a foreign key referring to User.id.
+ */

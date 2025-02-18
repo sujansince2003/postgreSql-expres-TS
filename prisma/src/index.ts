@@ -69,24 +69,53 @@ async function getUsers() {
     // })
     // console.log(deleteUser)
 
-    const users = await prisma.user.findUnique({
-        where:
-        {
-            username: "test2"
-        }
-    })
-    const id = users?.id
+    // const users = await prisma.user.findUnique({
+    //     where:
+    //     {
+    //         username: "test2"
+    //     }
+    // })
+    // const id = users?.id
 
-    const courseName = await prisma.course.findFirst({
-        where:
-        {
-            userId: id
-        },
+    // const courseName = await prisma.course.findFirst({
+    //     where:
+    //     {
+    //         userId: id
+    //     },
 
-    })
+    // })
 
+
+
+    // const getUsername = await prisma.course.findFirst({
+    //     where:
+    //     {
+    //         userId: 3
+    //     },
+    //     select:
+    //     {
+    //         User: {
+    //             select:
+    //             {
+    //                 username: true
+    //             }
+    //         },
+    //         courseName: true
+    //     }
+    // })
     //create course
-    console.log(courseName)
+    const userWithCourses = await prisma.course.findUnique({
+        where: {
+            id: 4 // Change this to the user's ID you want to fetch
+        },
+        include: {
+            User: true // Assuming the relation is named `courses`
+        }
+    });
+
+    console.log(userWithCourses);
+
+    // console.log(getUsername)
 
 }
 
