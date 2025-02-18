@@ -54,9 +54,10 @@ async function getUsers() {
     //     {
     //         data:
     //         {
-    //             courseName: "csit",
+    //             courseName: "bca",
     //             semester: "sixth",
-    //             clg: "BMC"
+    //             clg: "BMC",
+    //             userId: 3,
     //         }
     //     }
     // )
@@ -67,6 +68,26 @@ async function getUsers() {
     //     }
     // })
     // console.log(deleteUser)
+
+    const users = await prisma.user.findUnique({
+        where:
+        {
+            username: "test2"
+        }
+    })
+    const id = users?.id
+
+    const courseName = await prisma.course.findFirst({
+        where:
+        {
+            userId: id
+        },
+
+    })
+
+    //create course
+    console.log(courseName)
+
 }
 
 getUsers()
